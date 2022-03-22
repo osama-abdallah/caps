@@ -1,30 +1,33 @@
 'use strict';
 
-const events = require('../events')
-const driver = require('../module/driver')
+const driver = require('../driver/driver');
 
-describe('CAPS CONSOLE LOG', () => {
-    let consoleSpy;
-    let orderCustomer;
+describe('Driver Console Logs', () => {
+  let consoleSpy;
+  let customerOrder;
 
-    beforeEach(() => {
-        consoleSpy = jest.spyOn(console, 'log').mockImplementation();
-        orderCustomer = {
-            orderStore : "Carfour",
-            orderId : 'fb4eb794-cba0-47de-8558-09875cf99455',
-            orderCustomer : 'Enrique Weber',
-            orderAddress : 'Marquardtfort,048 Donato Mall'
-        };
-    })
-    afterEach(()=>{
-        consoleSpy.mockRestore();
-    });
-it('verify that makingPickUp() logs a pickup',()=>{
-    driver.makingPickUp(orderCustomer);
-    expect(consoleSpy).toHaveBeenCalledWith('DRIVER : picked up fb4eb794-cba0-47de-8558-09875cf99455')
-})
-it('verify that makingDelivery() logs a pickup',()=>{
-    driver.makingDelivery(orderCustomer);
-    expect(consoleSpy).toHaveBeenCalledWith('DRIVER: deliverd up fb4eb794-cba0-47de-8558-09875cf99455')
-})
-})
+  beforeEach(() => {
+    consoleSpy = jest.spyOn(console, 'log').mockImplementation();
+    customerOrder = {
+      orderStore: 'Carfour',
+      orderId: '9b8a70b8-49a8-4657-ab44-be1f8201291c',
+      orderCustomer: 'Julia Balistreri',
+      orderAddress: '420 Emory Shoal Apt. 681, Port Alberto, OR 03119'
+    };
+  });
+
+  afterEach( () => {
+    consoleSpy.mockRestore();
+  });
+
+  it('verifies that doPickup() logs a pickup properly', () => {
+    driver.doPickup(customerOrder);
+    expect(consoleSpy)
+      .toHaveBeenCalledWith(`picking Up ${customerOrder.orderId}`);
+  });
+  it('verifies that doDelivery() logs a delivery properly', () => {
+    driver.doDelivery(customerOrder);
+    expect(consoleSpy)
+      .toHaveBeenCalledWith(`Delivering up ${customerOrder.orderId}`);
+  });
+});

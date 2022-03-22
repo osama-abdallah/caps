@@ -1,37 +1,35 @@
 'use strict';
 
-const events = require('../events');
-const caps = require('../caps');
-const driver = require('../module/driver')
-const vendor = require('../module/vendor')
+const { logEvent } = require('../caps/modules/logEvent');
 
-describe('CAPS CONSOLE LOG', () => {
-    let consoleSpy; 
-    let orderCustomer;
+describe('CAPS Console Logs', () => {
+  let consoleSpy;
+  let customerOrder;
 
-    beforeEach(() => {
-        consoleSpy = jest.spyOn(console, 'log').mockImplementation();
-        orderCustomer = {
-            orderStore : "Carfour",
-            orderId : '24093aa5-fc32-41d5-ae6f-41121c82c046',
-            orderCustomer : 'Enrique Weber',
-            orderAddress : 'Marquardtfort,048 Donato Mall'
-        };
-    })
-    afterEach(()=>{
-        consoleSpy.mockRestore();
-    });
+  beforeEach(() => {
+    consoleSpy = jest.spyOn(console, 'log').mockImplementation();
+    customerOrder = {
+      orderStore: 'Carfour',
+      orderId: '9b8a70b8-49a8-4657-ab44-be1f8201291c',
+      orderCustomer: 'Julia Balistreri',
+      orderAddress: '420 Emory Shoal Apt. 681, Port Alberto, OR 03119',
+    };
+  });
 
-    it('verifies the "pickup" emit triggers console in CAPS',()=>{
-        events.emit('pickup',orderCustomer);
-        expect(consoleSpy).toHaveBeenCalledTimes(1);
-    })
-    it('verifies the "in-transit" emit triggers console in CAPS',()=>{
-        events.emit('in-transit',orderCustomer);
-        expect(consoleSpy).toHaveBeenCalledTimes(1);
-    })
-    it('verifies the "delivered" emit triggers console in CAPS',()=>{
-        events.emit('delivered',orderCustomer);
-        expect(consoleSpy).toHaveBeenCalledTimes(2);
-    })
-})
+  afterEach( () => {
+    consoleSpy.mockRestore();
+  });
+
+  it('verifies the "pickup" emit triggers console logs in CAPS', () => {
+    logEvent('pickup', customerOrder);
+    expect(consoleSpy).toHaveBeenCalledTimes(1); 
+  });
+  it('verifies the "in-transit" emit triggers console logs in CAPS', () => {
+    logEvent('in-transit', customerOrder);
+    expect(consoleSpy).toHaveBeenCalledTimes(1); 
+  });
+  it('verifies the "delivered" emit triggers console logs in CAPS', () => {
+    logEvent('delivered', customerOrder);
+    expect(consoleSpy).toHaveBeenCalledTimes(1); 
+  });
+});
